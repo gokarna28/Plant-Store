@@ -48,6 +48,7 @@
         </ul>
 
         <div class="w-full flex items-center  px-16 gap-10">
+           
             <div class="w-1/4 bg-slate-50 shadow-md">
                 <div class="h-">
                     <img src="<?php echo get_template_directory_uri(); ?>/assets/images/product1.jpg"
@@ -57,8 +58,8 @@
                     <p class="text-xl font-bold">Calathea Pin-Stripe Plant</p>
                     <p class="text-lg text-slate-600 mb-2">$113.00</p>
                     <div class="flex items-center justify-between">
-                        <button class="bg-blue-500 text-white text-xl px-4 py-2 hover:bg-blue-600">Buy Now</button>
-                        <button class="bg-orange-500 text-white text-xl px-4 py-2 hover:bg-orange-600">Add To
+                        <button class="bg-blue-500 w-full text-white text-xl px-4 py-2 hover:bg-blue-600">Buy Now</button>
+                        <button class="bg-orange-500 w-full text-white text-xl px-4 py-2 hover:bg-orange-600">Add To
                             Cart</button>
                     </div>
                 </div>
@@ -72,8 +73,8 @@
                     <p class="text-xl font-bold">Calathea Pin-Stripe Plant</p>
                     <p class="text-lg text-slate-600 mb-2">$113.00</p>
                     <div class="flex items-center justify-between">
-                        <button class="bg-blue-500 text-white text-xl px-4 py-2 hover:bg-blue-600">Buy Now</button>
-                        <button class="bg-orange-500 text-white text-xl px-4 py-2 hover:bg-orange-600">Add To
+                        <button class="bg-blue-500 w-full text-white text-xl px-4 py-2 hover:bg-blue-600">Buy Now</button>
+                        <button class="bg-orange-500 w-full text-white text-xl px-4 py-2 hover:bg-orange-600">Add To
                             Cart</button>
                     </div>
                 </div>
@@ -87,8 +88,8 @@
                     <p class="text-xl font-bold">Calathea Pin-Stripe Plant</p>
                     <p class="text-lg text-slate-600 mb-2">$113.00</p>
                     <div class="flex items-center justify-between">
-                        <button class="bg-blue-500 text-white text-xl px-4 py-2 hover:bg-blue-600">Buy Now</button>
-                        <button class="bg-orange-500 text-white text-xl px-4 py-2 hover:bg-orange-600">Add To
+                        <button class="bg-blue-500 w-full text-white text-xl px-4 py-2 hover:bg-blue-600">Buy Now</button>
+                        <button class="bg-orange-500 w-full text-white text-xl px-4 py-2 hover:bg-orange-600">Add To
                             Cart</button>
                     </div>
                 </div>
@@ -102,8 +103,8 @@
                     <p class="text-xl font-bold">Calathea Pin-Stripe Plant</p>
                     <p class="text-lg text-slate-600 mb-2">$113.00</p>
                     <div class="flex items-center justify-between">
-                        <button class="bg-blue-500 text-white text-xl px-4 py-2 hover:bg-blue-600">Buy Now</button>
-                        <button class="bg-orange-500 text-white text-xl px-4 py-2 hover:bg-orange-600">Add To
+                        <button class="bg-blue-500 w-full text-white text-xl px-4 py-2 hover:bg-blue-600">Buy Now</button>
+                        <button class="bg-orange-500 w-full text-white text-xl px-4 py-2 hover:bg-orange-600">Add To
                             Cart</button>
                     </div>
                 </div>
