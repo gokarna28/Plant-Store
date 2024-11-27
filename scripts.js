@@ -1,5 +1,14 @@
-// Handle the AJAX request to add multiple products
-$(document).on("submit", "#add-multiple-products-form", function (e) {
-    e.preventDefault();
-    console.log("this is working");
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const categoryList = document.querySelectorAll('.category_list');
+    categoryList.forEach(function (category) {
+        console.log(category.textContent); 
+        category.addEventListener('click', () => {
+            alert('Category clicked: ' + category.textContent); // Display the clicked category name
+        });
+    });
+
 });
+console.log('helksjfs')
+alert('working');
