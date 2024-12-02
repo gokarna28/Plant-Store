@@ -22,7 +22,7 @@ function theme01_enqueue_scripts()
     }
 
 
-    if (is_singular()) {
+    if (is_single()) {
         wp_enqueue_script(
             'single-js',
             get_template_directory_uri() . '/assets/js/single.js',
@@ -155,3 +155,103 @@ function plantStore_product_details_save($product_id)
     }
 }
 add_action('save_post', 'plantStore_product_details_save');
+
+function enqueue_custom_scripts()
+{
+    wp_enqueue_script('jquery');
+    wp_enqueue_script(
+        'custom-js',
+        get_template_directory_uri() . '/assets/js/main.js',
+        array('jquery'),
+        '1.0',
+        true
+    );
+
+    wp_localize_script(
+        'custom-js',
+        'product_cate_filter',
+        array(
+            'ajaxurl' => esc_url(admin_url('admin-ajax.php')),
+        )
+    );
+}
+add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');
+
+function filter_category_callback()
+{
+    $category_slug = isset($_POST['category']) ? sanitize_text_field($_POST['category']) : '';
+    // var_dump($category_slug);
+
+    if (!empty($category_slug)) {
+
+        $args = array(
+            'post_type' => 'products',
+            'posts_per_page' => 4,
+            'tax_query' => array(
+                array(
+                    'taxonomy' => 'categories',
+                    'field' => 'slug',
+                    'terms' => explode(',', $category_slug),
+                ),
+            ),
+        );
+
+        $products_loop = new WP_Query($args);
+
+        if ($products_loop->have_posts()) {
+
+            while ($products_loop->have_posts()) {
+                $products_loop->the_post();
+                $product_id = get_the_ID();
+                $product_price = get_post_meta($product_id, '_plantStore_product_price', true);
+                $product_discount = get_post_meta($product_id, '_plantStore_product_discount', true);
+                $image_path = wp_get_attachment_image_src(get_post_thumbnail_id(), 'large');
+
+
+                $output .= '<a class="bg-slate-50 shadow-md hover:shadow-lg" href="' . get_the_permalink() . '">';
+                $output .= '<div class="relative h-96 w-full">';
+                $output .= '<img src="' . esc_url($image_path[0]) . '" class="w-full h-full object-cover" />';
+                $output .= '</div>';
+                $output .= '<div class="px-4 py-2">';
+                $output .= '<p class="text-xl font-bold">' . get_the_title() . '</p>';
+                $output .= '<p class="text-lg text-slate-600 mb-2 flex items-center justify-between"><span>';
+
+                if (!empty($product_discount)) {
+                    $discounted_price = $product_price - ($product_price * $product_discount) / 100;
+                    $output .= "<span class='line-through text-slate-400'>Rs. $product_price</span> Rs. $discounted_price";
+                } else {
+                    $output .= "Rs. $product_price";
+                }
+
+                $output .= '</span>';
+
+                if (!empty($product_discount)) {
+                    $output .= "<span class='text-sm'>Discount " . $product_discount . "%" . "</span>";
+                }
+
+                $output .= '</p>';
+                $output .= '<div class="flex space-x-2">';
+                $output .= '<button class="bg-blue-500 flex-1 text-white text-xl px-4 py-2 hover:bg-blue-600">Buy Now</button>';
+                $output .= '<button class="bg-orange-500 flex-1 text-white text-xl px-4 py-2 hover:bg-orange-600">Add To Cart</button>';
+                $output .= '</div>';
+                $output .= '</div>';
+                $output .= '</a>';
+            }
+            wp_send_json_success($output);
+        } else {
+            wp_send_json_error('No products found.');
+        }
+
+        wp_reset_postdata();
+    } else {
+        wp_send_json_error('Invalid category.');
+    }
+
+    wp_die();
+}
+
+// Hook for logged-in users
+add_action('wp_ajax_filter_category', 'filter_category_callback');
+
+// Hook for guests
+add_action('wp_ajax_nopriv_filter_category', 'filter_category_callback');
