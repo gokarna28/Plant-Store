@@ -33,14 +33,24 @@ function theme01_enqueue_scripts()
     }
 
     // Custom JavaScript
-    // wp_enqueue_script(
-    //     'custom-js',
-    //     get_template_directory_uri() . '/asstes/js/custom.js',
-    //     [],
-    //     '1.0',
-    //     true
-    // );
+    wp_enqueue_script(
+        'custom-js',
+        get_template_directory_uri() . '/assets/js/custom.js',
+        [],
+        '1.0',
+        true
+    );
 
+    // cart product js
+    if (is_page('cart')) {
+        wp_enqueue_script(
+            'product-cart-js',
+            get_template_directory_uri() . '/assets/js/product-cart.js',
+            ['jQuery'],
+            '1.0',
+            true
+        );
+    }
     //enqueue style
     wp_enqueue_style('style-css');
 
@@ -207,7 +217,7 @@ function filter_category_callback()
                 $product_discount = get_post_meta($product_id, '_plantStore_product_discount', true);
                 $image_path = wp_get_attachment_image_src(get_post_thumbnail_id(), 'large');
 
-
+                $output .= '<div>';
                 $output .= '<a class="bg-slate-50 shadow-md hover:shadow-lg" href="' . get_the_permalink() . '">';
                 $output .= '<div class="relative h-96 w-full">';
                 $output .= '<img src="' . esc_url($image_path[0]) . '" class="w-full h-full object-cover" />';
@@ -228,14 +238,14 @@ function filter_category_callback()
                 if (!empty($product_discount)) {
                     $output .= "<span class='text-sm'>Discount " . $product_discount . "%" . "</span>";
                 }
-
                 $output .= '</p>';
-                $output .= '<div class="flex space-x-2">';
-                $output .= '<button class="bg-blue-500 flex-1 text-white text-xl px-4 py-2 hover:bg-blue-600">Buy Now</button>';
-                $output .= '<button class="bg-orange-500 flex-1 text-white text-xl px-4 py-2 hover:bg-orange-600">Add To Cart</button>';
-                $output .= '</div>';
                 $output .= '</div>';
                 $output .= '</a>';
+                $output .= '<div class="flex space-x-2">';
+                $output .= '<button class="bg-blue-500 flex-1 text-white text-xl px-4 py-2 hover:bg-blue-600">Buy Now</button>';
+                $output .= '<button class="productCart bg-orange-500 flex-1 text-white text-xl px-4 py-2 hover:bg-orange-600">Add To Cart</button>';
+                $output .= '</div>';
+                $output .= '</div>';
             }
             wp_send_json_success($output);
         } else {

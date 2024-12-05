@@ -31,6 +31,7 @@ get_header();
         </div>
         <div class="mt-6 mb-6 flex items-center justify-between">
             <?php
+            $product_id = $post->ID;
             $product_price = get_post_meta($post->ID, '_plantStore_product_price', true);
             $product_discount = get_post_meta($post->ID, '_plantStore_product_discount', true); ?>
 
@@ -56,20 +57,34 @@ get_header();
                 <span id="decreaseNumber"
                     class="border p-2 hover:bg-gray-200 h-full flex items-center cursor-pointer"><i
                         class="fa-solid fa-minus"></i></span>
-                <p id="product_number" class="border p-3 h-full flex items-center ">1</p>
+                        <!-- prooduct amount is added here  -->
+                <p id="product_number" class="border p-3 h-full flex items-center ">1</p> 
                 <span id="increaseNumber"
                     class="border p-2 hover:bg-gray-200 h-full flex items-center cursor-pointer"><i
                         class="fa-solid fa-plus"></i></span>
             </div>
             <div class="flex w-full space-x-2 items-center">
-                <button class="bg-blue-500 hover:bg-blue-600 w-full py-4 text-xl text-white font-bold">Buy Now</button>
-                <button class="bg-orange-500 hover:bg-orange-600 w-full py-4 text-xl text-white font-bold">Add to
+                <button id="test" class="bg-blue-500 hover:bg-blue-600 w-full py-4 text-xl text-white font-bold">Buy Now</button>
+                <button class="productCart bg-orange-500 hover:bg-orange-600 w-full py-4 text-xl text-white font-bold"
+                    data-product-title="<?php the_title(); ?>" data-product-id="<?php echo $product_id; ?>"
+                    data-product-price="<?php 
+                    if (!empty($product_discount)) {
+                        $discounted_price = $product_price - ($product_price * $product_discount) / 100;
+                        echo $discounted_price;
+                    } else {
+                        echo $product_price;
+                    }
+                    ?>"
+                   
+                    >Add to
                     Cart</button>
             </div>
         </div>
     </div>
 </section>
 
+
+<!-- related product  -->
 <section>
     <h2 class="text-5xl font-bold text-center">Related Products</h2>
     <div class="p-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
@@ -129,7 +144,8 @@ get_header();
                         </p>
                         <div class="flex space-x-2">
                             <button class="bg-blue-500 flex-1 text-white text-xl px-4 py-2 hover:bg-blue-600">Buy Now</button>
-                            <button class="bg-orange-500 flex-1 text-white text-xl px-4 py-2 hover:bg-orange-600">Add To
+                            <button class="productCart bg-orange-500 flex-1 text-white text-xl px-4 py-2 hover:bg-orange-600"
+                                data-title="<?php the_title(); ?>" data-id="<?php echo $post->ID; ?>">Add To
                                 Cart</button>
                         </div>
                     </div>

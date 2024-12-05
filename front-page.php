@@ -81,41 +81,44 @@
                     $product_price = get_post_meta($post->ID, '_plantStore_product_price', true);
                     $product_discount = get_post_meta($post->ID, '_plantStore_product_discount', true);
                     ?>
+                    <div>
+                        <a class="bg-slate-50 shadow-md hover:shadow-lg" href="<?php the_permalink(); ?>">
+                            <div class="relative h-96 w-full">
+                                <img src="<?php echo $image_path[0]; ?>" class="w-full h-full object-cover" />
+                            </div>
+                            <div class="px-4 py-2">
+                                <p class="text-xl font-bold"><?php the_title(); ?></p>
 
-                    <a class="bg-slate-50 shadow-md hover:shadow-lg" href="<?php the_permalink(); ?>">
-                        <div class="relative h-96 w-full">
-                            <img src="<?php echo $image_path[0]; ?>" class="w-full h-full object-cover" />
-                        </div>
-                        <div class="px-4 py-2">
-                            <p class="text-xl font-bold"><?php the_title(); ?></p>
+                                <p class="text-lg text-slate-600 mb-2 flex items-center justify-between">
+                                    <span>
+                                        <?php
 
-                            <p class="text-lg text-slate-600 mb-2 flex items-center justify-between">
-                                <span>
+                                        if (!empty($product_discount)) {
+                                            $discounted_price = $product_price - ($product_price * $product_discount) / 100;
+
+                                            echo "<span class='line-through text-slate-400'>Rs. $product_price</span> " . "Rs. " . $discounted_price;
+                                        } else {
+                                            echo "Rs. " . $product_price;
+                                        }
+                                        ?>
+                                    </span>
                                     <?php
-
                                     if (!empty($product_discount)) {
-                                        $discounted_price = $product_price - ($product_price * $product_discount) / 100;
-
-                                        echo "<span class='line-through text-slate-400'>Rs. $product_price</span> " . "Rs. " . $discounted_price;
-                                    } else {
-                                        echo "Rs. " . $product_price;
+                                        echo "<span class='text-sm'>Discount " . $product_discount . "%" . "</span>";
                                     }
                                     ?>
-                                </span>
-                                <?php
-                                if (!empty($product_discount)) {
-                                    echo "<span class='text-sm'>Discount " . $product_discount . "%" . "</span>";
-                                }
-                                ?>
-                            </p>
-                            <div class="flex space-x-2">
-                                <button class="bg-blue-500 flex-1 text-white text-xl px-4 py-2 hover:bg-blue-600">Buy
-                                    Now</button>
-                                <button class="bg-orange-500 flex-1 text-white text-xl px-4 py-2 hover:bg-orange-600">Add To
-                                    Cart</button>
+                                </p>
                             </div>
+                        </a>
+                        <div class="flex space-x-2">
+                            <button class="bg-blue-500 flex-1 text-white text-xl px-4 py-2 hover:bg-blue-600">Buy
+                                Now</button>
+                            <button class="productCart bg-orange-500 flex-1 text-white text-xl px-4 py-2 hover:bg-orange-600"
+                                data-title="<?php the_title(); ?>" data-id="<?php echo $post->ID; ?>">Add To
+                                Cart</button>
                         </div>
-                    </a>
+                    </div>
+
                     <?php
                 }
             } else {
@@ -191,7 +194,7 @@
                         </div>
                         <div class="px-4 py-2">
                             <p class="text-xl font-bold"><?php the_title(); ?></p>
-                            <p><?php the_content();?></p>
+                            <p><?php the_content(); ?></p>
                         </div>
                     </a>
                     <?php
