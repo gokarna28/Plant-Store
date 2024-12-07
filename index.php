@@ -18,6 +18,8 @@ get_header(); // Call the header
             $image_path = wp_get_attachment_image_src(get_post_thumbnail_id(), 'large');
             $product_price = get_post_meta($post->ID, '_plantStore_product_price', true);
             $product_discount = get_post_meta($post->ID, '_plantStore_product_discount', true);
+            $post_slug = get_post_field('post_name', $post->ID);
+
             ?>
             <div>
                 <a class="bg-slate-50 shadow-md hover:shadow-lg" href="<?php the_permalink(); ?>">
@@ -50,7 +52,20 @@ get_header(); // Call the header
                 </a>
                 <div class="flex space-x-2">
                     <button class="bg-blue-500 flex-1 text-white text-xl px-4 py-2 hover:bg-blue-600">Buy Now</button>
-                    <button class="productCart bg-orange-500 flex-1 text-white text-xl px-4 py-2 hover:bg-orange-600">Add To
+                    <button class="productCart bg-orange-500 flex-1 text-white text-xl px-4 py-2 hover:bg-orange-600"
+
+                        data-product-title="<?php the_title(); ?>" 
+                        data-product-id="<?php echo $post->ID; ?>"
+                        data-product-price="<?php
+                        if (!empty($product_discount)) {
+                            $discounted_price = $product_price - ($product_price * $product_discount) / 100;
+                            echo $discounted_price;
+                        } else {
+                            echo $product_price;
+                        }
+                        ?>" data-product-image="<?php echo $image_path[0]; ?>"
+                        data-product-slug="<?php echo $post_slug; ?>"
+                        >Add To
                         Cart</button>
                 </div>
             </div>

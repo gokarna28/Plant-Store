@@ -219,6 +219,7 @@ function filter_category_callback()
                 $product_price = get_post_meta($product_id, '_plantStore_product_price', true);
                 $product_discount = get_post_meta($product_id, '_plantStore_product_discount', true);
                 $image_path = wp_get_attachment_image_src(get_post_thumbnail_id(), 'large');
+                $post_slug = get_post_field('post_name', $product_id);
 
                 $output .= '<div>';
                 $output .= '<a class="bg-slate-50 shadow-md hover:shadow-lg" href="' . get_the_permalink() . '">';
@@ -246,7 +247,15 @@ function filter_category_callback()
                 $output .= '</a>';
                 $output .= '<div class="flex space-x-2">';
                 $output .= '<button class="bg-blue-500 flex-1 text-white text-xl px-4 py-2 hover:bg-blue-600">Buy Now</button>';
-                $output .= '<button class="productCart bg-orange-500 flex-1 text-white text-xl px-4 py-2 hover:bg-orange-600">Add To Cart</button>';
+                $output .= '<button class="listed bg-orange-500 flex-1 text-white text-xl px-4 py-2 hover:bg-orange-600"
+                                data-product-title="' . get_the_title() . '" 
+                                data-product-id="' . $product_id . '"
+                                data-product-price="' . ($product_discount ? $product_price - ($product_price * $product_discount) / 100 : $product_price) . '" 
+                                data-product-image="' . esc_url($image_path[0]) . '"
+                                data-product-slug="' . $post_slug . '">
+                                Add To Cart
+                            </button>';
+            
                 $output .= '</div>';
                 $output .= '</div>';
             }

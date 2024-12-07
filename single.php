@@ -34,7 +34,7 @@ get_header();
             $product_id = $post->ID;
             $product_price = get_post_meta($post->ID, '_plantStore_product_price', true);
             $product_discount = get_post_meta($post->ID, '_plantStore_product_discount', true);
-            $post_slug = get_post_field('post_name',$product_id);
+            $post_slug = get_post_field('post_name', $product_id);
             // var_dump($post_slug);
             ?>
             <p class="text-2xl text-slate-700"><?php
@@ -77,10 +77,8 @@ get_header();
                     } else {
                         echo $product_price;
                     }
-                    ?>" 
-                    data-product-image="<?php echo $featured_image; ?>"
-                    data-product-slug="<?php echo $post_slug; ?>"
-                    >Add to
+                    ?>" data-product-image="<?php echo $featured_image; ?>"
+                    data-product-slug="<?php echo $post_slug; ?>">Add to
                     Cart</button>
             </div>
         </div>
@@ -105,7 +103,6 @@ get_header();
                     'taxonomy' => 'categories',
                     'field' => 'slug',
                     'terms' => $category_slugs,
-
                 )
             ),
         );
@@ -119,41 +116,56 @@ get_header();
                 $products_loop->the_post();
                 $image_path = wp_get_attachment_image_src(get_post_thumbnail_id(), 'large');
                 $product_price = get_post_meta($post->ID, '_plantStore_product_price', true);
+                $post_slug = get_post_field('post_name', $post->ID);
+                // var_dump($post_slug);
+
                 ?>
+                <div>
+                    <a class="bg-slate-50 shadow-md hover:shadow-lg" href="<?php the_permalink(); ?>">
+                        <div class="relative h-96 w-full">
+                            <img src="<?php echo $image_path[0]; ?>" class="w-full h-full object-cover" />
+                        </div>
+                        <div class="px-4 py-2">
+                            <p class="text-xl font-bold"><?php the_title(); ?></p>
+                            <p class="text-lg text-slate-600 mb-2 flex items-center justify-between">
+                                <span>
+                                    <?php
 
-                <a class="bg-slate-50 shadow-md hover:shadow-lg" href="<?php the_permalink(); ?>">
-                    <div class="relative h-96 w-full">
-                        <img src="<?php echo $image_path[0]; ?>" class="w-full h-full object-cover" />
-                    </div>
-                    <div class="px-4 py-2">
-                        <p class="text-xl font-bold"><?php the_title(); ?></p>
-                        <p class="text-lg text-slate-600 mb-2 flex items-center justify-between">
-                            <span>
+                                    if (!empty($product_discount)) {
+                                        $discounted_price = $product_price - ($product_price * $product_discount) / 100;
+
+                                        echo "<span class='line-through text-slate-400'>Rs. $product_price</span> " . "Rs. " . $discounted_price;
+                                    } else {
+                                        echo "Rs. " . $product_price;
+                                    }
+                                    ?>
+                                </span>
                                 <?php
-
                                 if (!empty($product_discount)) {
-                                    $discounted_price = $product_price - ($product_price * $product_discount) / 100;
-
-                                    echo "<span class='line-through text-slate-400'>Rs. $product_price</span> " . "Rs. " . $discounted_price;
-                                } else {
-                                    echo "Rs. " . $product_price;
+                                    echo "<span class='text-sm'>Discount " . $product_discount . "%" . "</span>";
                                 }
                                 ?>
-                            </span>
-                            <?php
-                            if (!empty($product_discount)) {
-                                echo "<span class='text-sm'>Discount " . $product_discount . "%" . "</span>";
-                            }
-                            ?>
-                        </p>
-                        <div class="flex space-x-2">
-                            <button class="bg-blue-500 flex-1 text-white text-xl px-4 py-2 hover:bg-blue-600">Buy Now</button>
-                            <button class="productCart bg-orange-500 flex-1 text-white text-xl px-4 py-2 hover:bg-orange-600"
-                                data-title="<?php the_title(); ?>" data-id="<?php echo $post->ID; ?>">Add To
-                                Cart</button>
+                            </p>
                         </div>
+                    </a>
+                    <div class="flex space-x-2">
+                        <button class="bg-blue-500 flex-1 text-white text-xl px-4 py-2 hover:bg-blue-600">Buy Now</button>
+                        <button class="productCart bg-orange-500 flex-1 text-white text-xl px-4 py-2 hover:bg-orange-600"
+                            data-product-title="<?php the_title(); ?>" 
+                            data-product-id="<?php echo $product_id; ?>"
+                            data-product-price="<?php
+                            if (!empty($product_discount)) {
+                                $discounted_price = $product_price - ($product_price * $product_discount) / 100;
+                                echo $discounted_price;
+                            } else {
+                                echo $product_price;
+                            }
+                            ?>" data-product-image="<?php echo $image_path[0]; ?>"
+                            data-product-slug="<?php echo $post_slug; ?>"
+                            >Add To
+                            Cart</button>
                     </div>
-                </a>
+                </div>
                 <?php
             }
         } else {

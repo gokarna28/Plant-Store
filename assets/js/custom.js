@@ -17,6 +17,11 @@ jQuery(document).ready(function ($) {
         let productPrice = parseFloat($(this).data('product-price')); 
         let productAmount = parseInt($('#product_number').html() || 1); 
       
+        // console.log(productTitle)
+        // console.log(productImage)
+        // console.log(productId)
+        // console.log(productSlug)
+        // console.log(productPrice)
         // console.log(productAmount)
         
 
