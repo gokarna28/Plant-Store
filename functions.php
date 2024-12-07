@@ -17,7 +17,7 @@ function theme01_enqueue_scripts()
             get_template_directory_uri() . '/assets/js/main.js',
             [],
             '1.0',
-            true,
+            true
         );
     }
 
@@ -43,10 +43,13 @@ function theme01_enqueue_scripts()
 
     // cart product js
     if (is_page('cart')) {
+
+        wp_enqueue_script('jquery');
+
         wp_enqueue_script(
             'product-cart-js',
             get_template_directory_uri() . '/assets/js/product-cart.js',
-            ['jQuery'],
+            ['jquery'],
             '1.0',
             true
         );

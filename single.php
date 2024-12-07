@@ -33,8 +33,10 @@ get_header();
             <?php
             $product_id = $post->ID;
             $product_price = get_post_meta($post->ID, '_plantStore_product_price', true);
-            $product_discount = get_post_meta($post->ID, '_plantStore_product_discount', true); ?>
-
+            $product_discount = get_post_meta($post->ID, '_plantStore_product_discount', true);
+            $post_slug = get_post_field('post_name',$product_id);
+            // var_dump($post_slug);
+            ?>
             <p class="text-2xl text-slate-700"><?php
             if (!empty($product_discount)) {
                 $discounted_price = $product_price - ($product_price * $product_discount) / 100;
@@ -57,25 +59,27 @@ get_header();
                 <span id="decreaseNumber"
                     class="border p-2 hover:bg-gray-200 h-full flex items-center cursor-pointer"><i
                         class="fa-solid fa-minus"></i></span>
-                        <!-- prooduct amount is added here  -->
-                <p id="product_number" class="border p-3 h-full flex items-center ">1</p> 
+                <!-- prooduct amount is added here  -->
+                <p id="product_number" class="border p-3 h-full flex items-center ">1</p>
                 <span id="increaseNumber"
                     class="border p-2 hover:bg-gray-200 h-full flex items-center cursor-pointer"><i
                         class="fa-solid fa-plus"></i></span>
             </div>
             <div class="flex w-full space-x-2 items-center">
-                <button id="test" class="bg-blue-500 hover:bg-blue-600 w-full py-4 text-xl text-white font-bold">Buy Now</button>
+                <button id="test" class="bg-blue-500 hover:bg-blue-600 w-full py-4 text-xl text-white font-bold">Buy
+                    Now</button>
                 <button class="productCart bg-orange-500 hover:bg-orange-600 w-full py-4 text-xl text-white font-bold"
                     data-product-title="<?php the_title(); ?>" data-product-id="<?php echo $product_id; ?>"
-                    data-product-price="<?php 
+                    data-product-price="<?php
                     if (!empty($product_discount)) {
                         $discounted_price = $product_price - ($product_price * $product_discount) / 100;
                         echo $discounted_price;
                     } else {
                         echo $product_price;
                     }
-                    ?>"
-                   
+                    ?>" 
+                    data-product-image="<?php echo $featured_image; ?>"
+                    data-product-slug="<?php echo $post_slug; ?>"
                     >Add to
                     Cart</button>
             </div>
