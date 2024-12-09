@@ -266,7 +266,9 @@ function filter_category_callback()
                                 data-product-id="' . $product_id . '"
                                 data-product-price="' . ($product_discount ? $product_price - ($product_price * $product_discount) / 100 : $product_price) . '" 
                                 data-product-image="' . esc_url($image_path[0]) . '"
-                                data-product-slug="' . $post_slug . '">
+                                data-product-slug="' . $post_slug . '"
+                                
+                                >
                                 Add To Cart
                             </button>';
             

@@ -16,7 +16,14 @@ jQuery(document).ready(function ($) {
         cart.forEach((item) => {
             CartItems.append(`
                 <tr class="border-b hover:bg-slate-300 text-xl">
-                  <td class="text-center"><label><input class="checkProduct" type='checkbox' value="${item.productId}"/></label></td>
+                  <td class="text-center"><label><input class="checkProduct" type='checkbox' value="${item.productId}"
+                  data-product-title="${item.productTitle}" 
+                data-product-id="${item.productId}"
+                    data-product-price="${item.productPrice}" 
+                    data-product-image="${item.productImage}"
+                    data-product-slug="${item.productSlug}"
+                    data-product-amount="${item.productAmount}"
+                  /></label></td>
                   <td class="flex items-center gap-4">
                     <a href="/products/${item.productSlug}" class="w-20 h-20 bg-red-300">
                       <img src="${item.productImage}" alt="product featured image" class="object-fill w-full h-full"/>
@@ -56,7 +63,7 @@ jQuery(document).ready(function ($) {
 
 
 
-
+    //remove the product from cart
     $('#removeFromCart').on('click', function () {
         // Get all selected product IDs
         let selectedProductIds = $('.checkProduct:checked').map(function () {
@@ -75,20 +82,53 @@ jQuery(document).ready(function ($) {
 
         // Update localStorage with the modified cart
         localStorage.setItem("cart", JSON.stringify(cart));
-        
+
         location.reload();
     });
 
 
-    //checkout btn
-    $('#checkout').on('click', function (){
-        let selectedProductIds = $('.checkProduct:checked').map(function () {
-            return $(this).val(); // Ensure this matches the type of productId in cart
-        }).get();
+    //checkout btn in the cart page add the products to the checkout page if the checkout clicked
+    $('#checkout').click(function () {
 
-        console.log('Selected Product IDs:', selectedProductIds);
+        $('.checkProduct:checked').each(function () {
+            // Retrieve the data attributes using jQuery's data() method
+            let productTitle = $(this).data('product-title');
+            let productId = $(this).data('product-id');
+            let productPrice = $(this).data('product-price');
+            let productImage = $(this).data('product-image');
+            let productSlug = $(this).data('product-slug');
+            let productAmount = $(this).data('product-amount');
 
-    })
+            // Log the data to the console
+            // console.log('Product Title:', productTitle);
+            // console.log('Product ID:', productId);
+            // console.log('Product Price:', productPrice);
+            // console.log('Product Image:', productImage);
+            // console.log('Product Slug:', productSlug);
+            // console.log('product Amount:', productAmount)
+
+            let productData = {
+                title: productTitle,
+                image: productImage,
+                id: productId,
+                slug: productSlug,
+                price: productPrice,
+                amount: productAmount
+            };
+
+      
+            let checkout = JSON.parse(localStorage.getItem('checkout')) || [];
+            
+            // Add the new product data to the cart array
+            checkout.push(productData);
+
+            // Save the updated cart array back to localStorage
+            localStorage.setItem('checkout', JSON.stringify(checkout));
+            // redirect to the checkout page 
+            window.location.href = 'http://plants-store.local/checkout/';
+
+        })
+    });
 
 });
 

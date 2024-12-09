@@ -1,4 +1,19 @@
-<?php get_header();
+<?php
+
+if (!session_id()) {
+    session_start();
+}
+
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    wp_redirect(home_url('/login-page'));
+    exit;
+}
+
+// Get user ID from session
+$user_id = intval($_SESSION['user_id']); 
+
+get_header();
 ?>
 <main>
     <!-- landing section  -->
@@ -126,6 +141,7 @@
                                 }
                                 ?>" data-product-image="<?php echo $image_path[0]; ?>"
                                 data-product-slug="<?php echo $post_slug; ?>"
+                                data-user-id="<?php echo $user_id; ?>"
                                 >Add To
                                 Cart</button>
                         </div>

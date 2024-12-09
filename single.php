@@ -1,4 +1,18 @@
 <?php
+
+if (!session_id()) {
+    session_start();
+}
+
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    wp_redirect(home_url('/login-page'));
+    exit;
+}
+
+// Get user ID from session
+$user_id = intval($_SESSION['user_id']); 
+
 get_header();
 ?>
 <section class="grid grid-cols-2 h-auto p-16 gap-10">
@@ -93,7 +107,9 @@ get_header();
                         echo $product_price;
                     }
                     ?>" data-product-image="<?php echo $featured_image; ?>"
-                    data-product-slug="<?php echo $post_slug; ?>">Add to
+                    data-product-slug="<?php echo $post_slug; ?>"
+                    data-user-id="<?php echo $user_id; ?>"
+                    >Add to
                     Cart</button>
             </div>
         </div>
@@ -166,7 +182,8 @@ get_header();
                     <div class="flex space-x-2">
 
                         <button class="productCart bg-orange-500 flex-1 text-white text-xl px-4 py-2 hover:bg-orange-600"
-                            data-product-title="<?php the_title(); ?>" data-product-id="<?php echo $product_id; ?>"
+                            data-product-title="<?php the_title(); ?>" 
+                            data-product-id="<?php echo $post->ID; ?>"
                             data-product-price="<?php
                             if (!empty($product_discount)) {
                                 $discounted_price = $product_price - ($product_price * $product_discount) / 100;
@@ -175,7 +192,9 @@ get_header();
                                 echo $product_price;
                             }
                             ?>" data-product-image="<?php echo $image_path[0]; ?>"
-                            data-product-slug="<?php echo $post_slug; ?>">Add To
+                            data-product-slug="<?php echo $post_slug; ?>"
+                            data-user-id="<?php echo $user_id; ?>"
+                            >Add To
                             Cart</button>
                     </div>
                 </div>

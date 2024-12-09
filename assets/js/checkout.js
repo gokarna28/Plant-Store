@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
     let checkout = JSON.parse(localStorage.getItem("checkout")) || [];
 
-    console.log(checkout);
+    // console.log(checkout);
 
     let priceTotal = 0;
     let quantityTotal = 0;
@@ -31,16 +31,6 @@ jQuery(document).ready(function ($) {
             quantityTotal += product.amount;
         });
 
-        // Generate the UUID
-
-        // Generate the UUID (ensure this is defined before using it)
-        // function generateUUID() {
-        //     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        //         var r = Math.random() * 16 | 0,
-        //             v = c === 'x' ? r : (r & 0x3 | 0x8);
-        //         return v.toString(16);
-        //     });
-        // }
 
         // Example usage:
         // var uuid = generateUUID();
@@ -50,10 +40,10 @@ jQuery(document).ready(function ($) {
         var product_code = 'EPAYTEST';  // Product code
         var secret_key = '8gBm/:&EnhH.1/q';  // Your eSewa secret key
 
-        console.log(total_amount)
-        console.log(transaction_uuid)
-        console.log(product_code)
-        console.log(secret_key)
+        // console.log(total_amount)
+        // console.log(transaction_uuid)
+        // console.log(product_code)
+        // console.log(secret_key)
 
         // Concatenate the string to hash
         var string_to_hash = total_amount + transaction_uuid + product_code;
@@ -62,7 +52,7 @@ jQuery(document).ready(function ($) {
         var hash = CryptoJS.HmacSHA256(string_to_hash, secret_key);
         var signature = CryptoJS.enc.Base64.stringify(hash);
 
-        console.log('Generated Signature:', signature);
+        // console.log('Generated Signature:', signature);
 
         // Append the order summary
         $('#orderSummary').append(`  
@@ -87,4 +77,7 @@ jQuery(document).ready(function ($) {
     } else {
         $('#checkoutContainer').html("<p>You don't have selected any product.</p>");
     }
+   
+
+    
 });

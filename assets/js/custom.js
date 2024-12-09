@@ -14,24 +14,26 @@ jQuery(document).ready(function ($) {
         let productImage = $(this).data('product-image');
         let productId = $(this).data('product-id');
         let productSlug = $(this).data('product-slug');
+        let userId = $(this).data('user-id');
         let productPrice = parseFloat($(this).data('product-price'));
         let productAmount = parseInt($('#product_number').html() || 1);
 
-        // console.log(productTitle)
-        // console.log(productImage)
-        // console.log(productId)
-        // console.log(productSlug)
-        // console.log(productPrice)
-        // console.log(productAmount)
+        console.log(productTitle)
+        console.log(productImage)
+        console.log(productId)
+        console.log(productSlug)
+        console.log(productPrice)
+        console.log(productAmount)
+        console.log(userId)
 
 
         // Check if the product already exists in the cart
         const ArrayIndex = cart.findIndex((item) => item.productId === productId);
-
+// console.log(ArrayIndex)
         if (ArrayIndex > -1) {
             cart[ArrayIndex].productAmount += productAmount;
         } else {
-            cart.push({ productTitle, productPrice, productId, productAmount, productImage, productSlug });
+            cart.push({ productTitle, productPrice, productId, productAmount, productImage, productSlug, userId });
         }
 
         updateCart();
@@ -76,12 +78,12 @@ jQuery(document).ready(function ($) {
         let productAmount = parseInt($('#product_number').html() || 1);
     
         // Log product data to console for debugging
-        console.log(productTitle);
-        console.log(productImage);
-        console.log(productId);
-        console.log(productSlug);
-        console.log(productPrice);
-        console.log(productAmount);
+        // console.log(productTitle);
+        // console.log(productImage);
+        // console.log(productId);
+        // console.log(productSlug);
+        // console.log(productPrice);
+        // console.log(productAmount);
     
         // Create an object to store the product details
         let productData = {
@@ -105,6 +107,21 @@ jQuery(document).ready(function ($) {
         // Optionally, redirect to checkout page
         window.location.href = 'http://plants-store.local/checkout/';
     });
+
+
+
+    // clear the localstorage checkout if the url is not matched 
+    $(document).ready(function () {
+
+        // Define the checkout URL
+        const checkoutURL = 'http://plants-store.local/checkout/'; 
+    
+        // Check if the current site URL is not the checkout URL
+        if (window.location.href !== checkoutURL) {
+            localStorage.removeItem('checkout');
+        }
+    });
+    
     
 });
 

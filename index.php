@@ -1,4 +1,18 @@
 <?php
+
+if (!session_id()) {
+    session_start();
+}
+
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    wp_redirect(home_url('/login-page'));
+    exit;
+}
+
+// Get user ID from session
+$user_id = intval($_SESSION['user_id']); 
+
 get_header(); // Call the header
 ?>
 <div class="p-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
@@ -65,6 +79,7 @@ get_header(); // Call the header
                         }
                         ?>" data-product-image="<?php echo $image_path[0]; ?>"
                         data-product-slug="<?php echo $post_slug; ?>"
+                        data-user-id="<?php echo $user_id; ?>"
                         >Add To
                         Cart</button>
                 </div>
