@@ -24,7 +24,7 @@ get_header(); // call the header
         <!-- cart operation button continer  -->
          <div class="w-full flex items-center justify-between">
             <div class="gap-6 items-center flex">
-            <button class="bg-orange-500 text-white py-2 px-4 hover:bg-orange-600"><i class="fa-regular fa-square-minus"></i> Remove from Cart</button>
+            <button class="bg-orange-500 text-white py-2 px-4 hover:bg-orange-600" id="removeFromCart"><i class="fa-regular fa-square-minus"></i> Remove from Cart</button>
             <button class="bg-sky-500 text-white py-2 px-4 hover:bg-sky-600">Checkout</button>
             </div>
             <button class="bg-red-500 text-white py-2 px-4 hover:bg-red-600" id="cleatCart"><i class="fa-regular fa-trash-can"></i> Clear Cart</button>

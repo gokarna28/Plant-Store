@@ -113,8 +113,7 @@
                             </div>
                         </a>
                         <div class="flex space-x-2">
-                            <button class="bg-blue-500 flex-1 text-white text-xl px-4 py-2 hover:bg-blue-600">Buy
-                                Now</button>
+                            
                             <button class="productCart bg-orange-500 flex-1 text-white text-xl px-4 py-2 hover:bg-orange-600"
                                 data-product-title="<?php the_title(); ?>" 
                                 data-product-id="<?php echo $post->ID; ?>"

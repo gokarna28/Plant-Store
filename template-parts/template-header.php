@@ -2,6 +2,7 @@
 /**
  * header template
  */
+
 ?>
 
 <nav class="bg-slate-50 border-b shadow-sm flex items-center justify-between p-4">
@@ -32,8 +33,8 @@
         )) ?>
     </div>
     <div class="w-1/2 flex items-ceter gap-4">
-        <a href="login.php" class="bg-yellow-300 text-xl p-4 rounded-full">
-            <i class="fa-regular fa-user"></i>
+        <a href="<?php echo site_url('user-profile');?>" class="bg-yellow-300 w-14 h-14 flex justify-center items-center rounded-full">
+            <i class="fa-regular fa-user font-thin text-3xl"></i>
         </a>
 
         <a href="<?php echo site_url('cart'); ?>" class="flex items-center bg-blue-500 rounded-full px-4 py-2">

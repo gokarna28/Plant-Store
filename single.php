@@ -35,6 +35,8 @@ get_header();
             $product_price = get_post_meta($post->ID, '_plantStore_product_price', true);
             $product_discount = get_post_meta($post->ID, '_plantStore_product_discount', true);
             $post_slug = get_post_field('post_name', $product_id);
+
+
             // var_dump($post_slug);
             ?>
             <p class="text-2xl text-slate-700"><?php
@@ -53,7 +55,7 @@ get_header();
             }
             ?></p>
         </div>
-
+       
         <div class="flex w-full items-center gap-6">
             <div class="flex items-center border h-full">
                 <span id="decreaseNumber"
@@ -66,7 +68,20 @@ get_header();
                         class="fa-solid fa-plus"></i></span>
             </div>
             <div class="flex w-full space-x-2 items-center">
-                <button id="test" class="bg-blue-500 hover:bg-blue-600 w-full py-4 text-xl text-white font-bold">Buy
+                <button
+                    class="buyNow bg-blue-500 hover:bg-blue-600 w-full text-center py-4 text-xl text-white font-bold"
+                    data-product-title="<?php the_title(); ?>" 
+                data-product-id="<?php echo $product_id; ?>"
+                    data-product-price="<?php
+                    if (!empty($product_discount)) {
+                        $discounted_price = $product_price - ($product_price * $product_discount) / 100;
+                        echo $discounted_price;
+                    } else {
+                        echo $product_price;
+                    }
+                    ?>" data-product-image="<?php echo $featured_image; ?>"
+                    data-product-slug="<?php echo $post_slug; ?>"
+                    >Buy
                     Now</button>
                 <button class="productCart bg-orange-500 hover:bg-orange-600 w-full py-4 text-xl text-white font-bold"
                     data-product-title="<?php the_title(); ?>" data-product-id="<?php echo $product_id; ?>"
@@ -118,7 +133,7 @@ get_header();
                 $product_price = get_post_meta($post->ID, '_plantStore_product_price', true);
                 $post_slug = get_post_field('post_name', $post->ID);
                 // var_dump($post_slug);
-
+        
                 ?>
                 <div>
                     <a class="bg-slate-50 shadow-md hover:shadow-lg" href="<?php the_permalink(); ?>">
@@ -149,10 +164,9 @@ get_header();
                         </div>
                     </a>
                     <div class="flex space-x-2">
-                        <button class="bg-blue-500 flex-1 text-white text-xl px-4 py-2 hover:bg-blue-600">Buy Now</button>
+
                         <button class="productCart bg-orange-500 flex-1 text-white text-xl px-4 py-2 hover:bg-orange-600"
-                            data-product-title="<?php the_title(); ?>" 
-                            data-product-id="<?php echo $product_id; ?>"
+                            data-product-title="<?php the_title(); ?>" data-product-id="<?php echo $product_id; ?>"
                             data-product-price="<?php
                             if (!empty($product_discount)) {
                                 $discounted_price = $product_price - ($product_price * $product_discount) / 100;
@@ -161,8 +175,7 @@ get_header();
                                 echo $product_price;
                             }
                             ?>" data-product-image="<?php echo $image_path[0]; ?>"
-                            data-product-slug="<?php echo $post_slug; ?>"
-                            >Add To
+                            data-product-slug="<?php echo $post_slug; ?>">Add To
                             Cart</button>
                     </div>
                 </div>

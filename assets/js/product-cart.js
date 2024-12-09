@@ -16,7 +16,7 @@ jQuery(document).ready(function ($) {
         cart.forEach((item) => {
             CartItems.append(`
                 <tr class="border-b hover:bg-slate-300 text-xl">
-                  <td class="text-center"><input type='checkbox'></td>
+                  <td class="text-center"><label><input class="checkProduct" type='checkbox' value="${item.productId}"/></label></td>
                   <td class="flex items-center gap-4">
                     <a href="/products/${item.productSlug}" class="w-20 h-20 bg-red-300">
                       <img src="${item.productImage}" alt="product featured image" class="object-fill w-full h-full"/>
@@ -29,12 +29,15 @@ jQuery(document).ready(function ($) {
                 </tr>
             `);
 
-            total += item.productPrice * item.productAmount * item.quantity;
+            // total += item.productPrice * item.productAmount;
         });
 
     } else {
         $('#cartItemsContainer').html("<p>Your cart is empty.</p>");
     }
+
+
+
 
     //clear cart
     $('#cleatCart').on('click', () => {
@@ -43,15 +46,40 @@ jQuery(document).ready(function ($) {
 
         if (confirmDelete) {
             // alert('delete success fully')
-            localStorage.clear();
+            localStorage.removeItem('cart');
             $('#cartItemsContainer').html("<p>Your cart is empty.</p>");
             $('#totalCart').html('00.00');
             cart = [];
         }
     })
 
-});
 
+
+
+
+    $('#removeFromCart').on('click', function () {
+        // Get all selected product IDs
+        let selectedProductIds = $('.checkProduct:checked').map(function () {
+            return $(this).val(); // Ensure this matches the type of productId in cart
+        }).get();
+
+        // console.log('Selected Product IDs:', selectedProductIds);
+
+        if (selectedProductIds.length === 0) {
+            alert("Please select at least one product to remove.");
+            return;
+        }
+
+        // Ensure type consistency between selectedProductIds and cart.productId
+        cart = cart.filter(item => !selectedProductIds.includes(item.productId.toString()));
+
+        // Update localStorage with the modified cart
+        localStorage.setItem("cart", JSON.stringify(cart));
+        
+        location.reload();
+    });
+
+});
 
 
 

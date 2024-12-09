@@ -54,6 +54,20 @@ function theme01_enqueue_scripts()
             true
         );
     }
+
+     // cart product js
+     if (is_page('checkout')) {
+
+        wp_enqueue_script('jquery');
+
+        wp_enqueue_script(
+            'checkout-js',
+            get_template_directory_uri() . '/assets/js/checkout.js',
+            ['jquery'],
+            '1.0',
+            true
+        );
+    }
     //enqueue style
     wp_enqueue_style('style-css');
 
