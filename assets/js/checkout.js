@@ -34,19 +34,18 @@ jQuery(document).ready(function ($) {
         // Generate the UUID
 
         // Generate the UUID (ensure this is defined before using it)
-        function generateUUID() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-                var r = Math.random() * 16 | 0,
-                    v = c === 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            });
-        }
+        // function generateUUID() {
+        //     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        //         var r = Math.random() * 16 | 0,
+        //             v = c === 'x' ? r : (r & 0x3 | 0x8);
+        //         return v.toString(16);
+        //     });
+        // }
 
         // Example usage:
-        var uuid = generateUUID();
-        console.log('Generated UUID:', uuid);
-
-        var total_amount =priceTotal;  // Total amount
+        // var uuid = generateUUID();
+        var uuid = 'plantStore-1'
+        var total_amount = priceTotal;  // Total amount
         var transaction_uuid = uuid;  // Unique transaction ID
         var product_code = 'EPAYTEST';  // Product code
         var secret_key = '8gBm/:&EnhH.1/q';  // Your eSewa secret key
@@ -55,7 +54,7 @@ jQuery(document).ready(function ($) {
         console.log(transaction_uuid)
         console.log(product_code)
         console.log(secret_key)
-        
+
         // Concatenate the string to hash
         var string_to_hash = total_amount + transaction_uuid + product_code;
 
@@ -67,19 +66,18 @@ jQuery(document).ready(function ($) {
 
         // Append the order summary
         $('#orderSummary').append(`  
-            <form class="w-1/2 m-10 flex flex-col items-center" action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
-                <input class="hidden" type="text" id="amount" name="amount" value="${priceTotal}" required>
-                <input class="hidden" type="text" id="tax_amount" name="tax_amount" value="0" required>
-                <input class="hidden" type="text" id="total_amount" name="total_amount" value="${priceTotal}" required>
-                <input class="hidden" type="text" id="transaction_uuid" name="transaction_uuid" value="${uuid}" required>
-                <input class="hidden" type="text" id="product_code" name="product_code" value="EPAYTEST" required>
-                <input class="hidden" type="text" id="product_service_charge" name="product_service_charge" value="0" required>
-                <input class="hidden" type="text" id="product_delivery_charge" name="product_delivery_charge" value="0" required>
-                <input class="hidden" type="text" id="success_url" name="success_url" value="http://plants-store.local/payment-success/" required>
-                <input class="hidden" type="text" id="failure_url" name="failure_url" value="http://plants-store.local/payment-failed/" required>
-                <input class="hidden" type="text" id="signed_field_names" name="signed_field_names" value="total_amount,transaction_uuid,product_code" required>
-                <input class="hidden" type="text" id="signature" name="signature" value="${signature}" required>
-                
+            <form action="https://uat.esewa.com.np/epay/main" method="POST">
+                <input class="hidden" type="text" id="amount" name="tAmt" value="${priceTotal}" required>
+
+                <input class="hidden" type="text" id="tax_amount" name="txAmt" value="0" required>
+                <input class="hidden" type="text" id="total_amount" name="amt" value="${priceTotal}" required>
+                <input class="hidden" type="text" id="pid" name="pid" value="${uuid}" required>
+                <input class="hidden" type="text" id="product_code" name="scd" value="EPAYTEST" required>
+                <input class="hidden" type="text" id="product_service_charge" name="psc" value="0" required>
+                <input class="hidden" type="text" id="product_delivery_charge" name="pdc" value="0" required>
+                <input class="hidden" type="text" id="success_url" name="su" value="http://plants-store.local/payment-success/" required>
+                <input class="hidden" type="text" id="failure_url" name="fu" value="http://plants-store.local/payment-failed/" required>
+                                
                 <h2 class="text-2xl font-bold mb-2">Order Summary</h2>
                 <p class="flex items-center w-full justify-between text-slate-500 text-lg mb-4"><span>Items Total(${quantityTotal})</span><span>Rs. ${priceTotal}</span></p>
                 <p class="flex items-center w-full justify-between font-bold mb-4 border-t pt-2 text-lg"><span>Total:</span><span>Rs.${priceTotal}</span></p>

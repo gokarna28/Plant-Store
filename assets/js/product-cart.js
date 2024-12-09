@@ -79,6 +79,17 @@ jQuery(document).ready(function ($) {
         location.reload();
     });
 
+
+    //checkout btn
+    $('#checkout').on('click', function (){
+        let selectedProductIds = $('.checkProduct:checked').map(function () {
+            return $(this).val(); // Ensure this matches the type of productId in cart
+        }).get();
+
+        console.log('Selected Product IDs:', selectedProductIds);
+
+    })
+
 });
 
 
