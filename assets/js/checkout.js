@@ -33,51 +33,57 @@ jQuery(document).ready(function ($) {
 
 
         // Example usage:
-        // var uuid = generateUUID();
-        var uuid = 'plantStore-1'
-        var total_amount = priceTotal;  // Total amount
-        var transaction_uuid = uuid;  // Unique transaction ID
-        var product_code = 'EPAYTEST';  // Product code
-        var secret_key = '8gBm/:&EnhH.1/q';  // Your eSewa secret key
+        function generateUniqueCode(length = 5, separator = '-') {
+            const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+            let code = '';
+            for (let i = 0; i < length; i++) {
+                code += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return code.match(new RegExp(`.{1,${Math.floor(length / 4)}}`, 'g')).join(separator);
+        }
 
+        var uuid = generateUniqueCode(5);
+        var total_amount = priceTotal;
+        var transaction_uuid = uuid;
+        var product_code = 'EPAYTEST';
+        var secret_key = '8gBm/:&EnhH.1/q';
+        var product_code = 'EPAYTEST';
         // console.log(total_amount)
         // console.log(transaction_uuid)
         // console.log(product_code)
         // console.log(secret_key)
 
-        // Concatenate the string to hash
-        var string_to_hash = total_amount + transaction_uuid + product_code;
-
-        // Generate the signature using HMAC-SHA256 and base64 encoding
-        var hash = CryptoJS.HmacSHA256(string_to_hash, secret_key);
+        var hash = CryptoJS.HmacSHA256(`total_amount=${total_amount},transaction_uuid=${transaction_uuid},product_code=${product_code}`, secret_key);
         var signature = CryptoJS.enc.Base64.stringify(hash);
 
-        // console.log('Generated Signature:', signature);
+        console.log(signature)
+
 
         // Append the order summary
         $('#orderSummary').append(`  
-            <form action="https://uat.esewa.com.np/epay/main" method="POST">
-                <input class="hidden" type="text" id="amount" name="tAmt" value="${priceTotal}" required>
-
-                <input class="hidden" type="text" id="tax_amount" name="txAmt" value="0" required>
-                <input class="hidden" type="text" id="total_amount" name="amt" value="${priceTotal}" required>
-                <input class="hidden" type="text" id="pid" name="pid" value="${uuid}" required>
-                <input class="hidden" type="text" id="product_code" name="scd" value="EPAYTEST" required>
-                <input class="hidden" type="text" id="product_service_charge" name="psc" value="0" required>
-                <input class="hidden" type="text" id="product_delivery_charge" name="pdc" value="0" required>
-                <input class="hidden" type="text" id="success_url" name="su" value="http://plants-store.local/payment-success/" required>
-                <input class="hidden" type="text" id="failure_url" name="fu" value="http://plants-store.local/payment-failed/" required>
-                                
+          <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
+            <input type="hidden" id="amount" name="amount" value="${total_amount}" required>
+            <input type="hidden" id="tax_amount" name="tax_amount" value ="0" required>
+            <input type="hidden" id="total_amount" name="total_amount" value="${total_amount}" required>
+            <input type="hidden" id="transaction_uuid" name="transaction_uuid" value="${transaction_uuid}" required>
+            <input type="hidden" id="product_code" name="product_code" value ="EPAYTEST" required>
+            <input type="hidden" id="product_service_charge" name="product_service_charge" value="0" required>
+            <input type="hidden" id="product_delivery_charge" name="product_delivery_charge" value="0" required>
+            <input type="hidden" id="success_url" name="success_url" value="http://plants-store.local/payment-success/" required>
+            <input type="hidden" id="failure_url" name="failure_url" value="http://plants-store.local/payment-failed/" required>
+            <input type="hidden" id="signed_field_names" name="signed_field_names" value="total_amount,transaction_uuid,product_code" required>
+            <input type="hidden" id="signature" name="signature" value="${signature}" required>
+           
                 <h2 class="text-2xl font-bold mb-2">Order Summary</h2>
                 <p class="flex items-center w-full justify-between text-slate-500 text-lg mb-4"><span>Items Total(${quantityTotal})</span><span>Rs. ${priceTotal}</span></p>
                 <p class="flex items-center w-full justify-between font-bold mb-4 border-t pt-2 text-lg"><span>Total:</span><span>Rs.${priceTotal}</span></p>
-                <button type="submit" value="submit" class="bg-green-500 px-4 py-2 text-white text-xl hover:bg-orange-600 w-full">Proceed to pay</button>
+                <button type="" value="submit" class="bg-green-500 px-4 py-2 text-white text-xl hover:bg-orange-600 w-full">Proceed to pay</button>
             </form>
         `);
     } else {
         $('#checkoutContainer').html("<p>You don't have selected any product.</p>");
     }
-   
 
-    
+
+
 });
