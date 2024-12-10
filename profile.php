@@ -61,5 +61,15 @@ get_header();
     <button type="submit" name="logout">Logout</button>
 </form>
 
+
+<section class="flex bg-white">
+    <container class="w-1/4 border-r">
+        <div>Profile</div>
+        <div>Order</div>
+        <div>Payment</div>
+        <div>Logout</div>
+    </container>
+    <container class="bg-slate-400 w-3/4">date</container>
+</section>
 <?php
 get_footer();

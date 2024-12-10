@@ -7,21 +7,9 @@
 
 <nav class="bg-slate-50 border-b shadow-sm flex items-center justify-between p-4">
     <div class="w-full">
-        <a class="navbar-brand" href="<?php echo site_url(); ?>">
-            <?php
-            $logoImage = get_header_image();
-            $siteName = get_bloginfo('name');
-
-            if (!empty($logoImage)) {
-                ?>
-                <img src="<?php echo $logoImage; ?>" alt="logo image" width="150">
-                <?php
-            } else {
-                ?>
-                <h1 class="text-3xl font-bold"><?php echo $siteName; ?></h1>
-                <?php
-            }
-            ?>
+        <a class="navbar-brand flex items-center gap-2" href="<?php echo site_url(); ?>">
+            <img src="<?php echo get_template_directory_uri() ?>/assets/images/logo.png" alt="logo image" width="50">
+            <h1 class="text-3xl font-bold"><?php echo get_bloginfo('name'); ?></h1>
         </a>
     </div>
     <div class="w-full">
@@ -33,7 +21,8 @@
         )) ?>
     </div>
     <div class="w-1/2 flex items-ceter gap-4">
-        <a href="<?php echo site_url('user-profile');?>" class="bg-yellow-300 w-14 h-14 flex justify-center items-center rounded-full">
+        <a href="<?php echo site_url('user-profile'); ?>"
+            class="bg-yellow-300 w-14 h-14 flex justify-center items-center rounded-full">
             <i class="fa-regular fa-user font-thin text-3xl"></i>
         </a>
 

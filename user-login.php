@@ -49,21 +49,24 @@ if (isset($_POST['login_btn'])) {
 ?>
 
 <main>
-    <div>
-        <h2>Login</h2>
-        <form method="post">
-            <div>
-                <label for="username">Username or Email</label>
-                <input type="text" name="username" placeholder="Enter your username or email" required />
-            </div>
-            <div>
-                <label for="password">Password</label>
-                <input type="password" name="password" placeholder="Enter your password" required />
-            </div>
-            <div>
-                <button type="submit" name="login_btn">Login</button>
-                <p>Don't have an account? <a href="<?php echo site_url(); ?>/register-page">Register</a></p>
-            </div>
-        </form>
+    <div style="background-color:rgb(240 253 244 / var(--tw-bg-opacity, 1)); height:100vh; display:flex; justify-content:center; padding:50px">
+        <div style="background-color: white; display:flex; flex-direction:column; align-items:center; height:400px; padding:20px;">
+            <img src="<?php echo get_template_directory_uri(); ?>/assets/images/logo.png" alt="plantstore logo"
+                style="width:100px; margin-bottom:20px;" />
+            <form method="post">
+                <div style="display:flex; flex-direction:column; margin-bottom:20px;">
+                    <label style="margin-bottom:5px;" for="username">Username or Email</label>
+                    <input style="padding:5px 10px; width:300px; border-radius:5px; font-size:18px;" type="text" name="username" placeholder="Enter your username or email" required />
+                </div>
+                <div style="display:flex; flex-direction:column; margin-bottom:20px;">
+                    <label style="margin-bottom:5px;" for="password">Password</label>
+                    <input style="padding:5px 10px; width:300px; border-radius:5px; font-size:18px;" type="password" name="password" placeholder="Enter your password" required />
+                </div>
+                <div style="display:flex; flex-direction:column; margin-bottom:20px;">
+                    <button style="font-size:18px; font-weight:500; color:white; background-color:green; padding:10px;" type="submit" name="login_btn">Login</button>
+                    <p style="font-size:18px;">Don't have an account? <a style="text-decoration:none; color:green;" href="<?php echo site_url(); ?>/register-page">Register</a></p>
+                </div>
+            </form>
+        </div>
     </div>
 </main>
