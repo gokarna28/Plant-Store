@@ -18,13 +18,13 @@ jQuery(document).ready(function ($) {
         let productPrice = parseFloat($(this).data('product-price'));
         let productAmount = parseInt($('#product_number').html() || 1);
 
-        console.log(productTitle)
-        console.log(productImage)
-        console.log(productId)
-        console.log(productSlug)
-        console.log(productPrice)
-        console.log(productAmount)
-        console.log(userId)
+        // console.log(productTitle)
+        // console.log(productImage)
+        // console.log(productId)
+        // console.log(productSlug)
+        // console.log(productPrice)
+        // console.log(productAmount)
+        // console.log(userId)
 
 
         // Check if the product already exists in the cart
@@ -73,6 +73,7 @@ jQuery(document).ready(function ($) {
         let productTitle = $(this).data('product-title');
         let productImage = $(this).data('product-image');
         let productId = $(this).data('product-id');
+        let userId = $(this).data('user-id');
         let productSlug = $(this).data('product-slug');
         let productPrice = parseFloat($(this).data('product-price'));
         let productAmount = parseInt($('#product_number').html() || 1);
@@ -92,7 +93,8 @@ jQuery(document).ready(function ($) {
             id: productId,
             slug: productSlug,
             price: productPrice,
-            amount: productAmount
+            amount: productAmount,
+            userId:userId
         };
     
         // Check if there are already products stored in localStorage

@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
 
         // Clear the cart area before appending
         checkOutItems.empty();
-
+        const productCheckoutData = [];
         // Loop through the cart and append items
         checkout.forEach((product) => {
             checkOutItems.append(`
@@ -29,8 +29,21 @@ jQuery(document).ready(function ($) {
 
             priceTotal += product.price * product.amount;
             quantityTotal += product.amount;
-        });
+            const productDetails = {
+                title: product.title,
+                slug: product.slug,
+                image: product.image,
+                price: product.price,
+                qty: product.amount,
+                userId: product.userId
+            }
 
+
+            productCheckoutData.push(productDetails)
+
+        });
+        var productData = productCheckoutData
+        // console.log(productData)
 
         // Example usage:
         function generateUniqueCode(length = 5, separator = '-') {
@@ -56,12 +69,11 @@ jQuery(document).ready(function ($) {
         var hash = CryptoJS.HmacSHA256(`total_amount=${total_amount},transaction_uuid=${transaction_uuid},product_code=${product_code}`, secret_key);
         var signature = CryptoJS.enc.Base64.stringify(hash);
 
-        console.log(signature)
+        // console.log(signature)
 
 
         // Append the order summary
         $('#orderSummary').append(`  
-          <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
             <input type="hidden" id="amount" name="amount" value="${total_amount}" required>
             <input type="hidden" id="tax_amount" name="tax_amount" value ="0" required>
             <input type="hidden" id="total_amount" name="total_amount" value="${total_amount}" required>
@@ -77,8 +89,8 @@ jQuery(document).ready(function ($) {
                 <h2 class="text-2xl font-bold mb-2">Order Summary</h2>
                 <p class="flex items-center w-full justify-between text-slate-500 text-lg mb-4"><span>Items Total(${quantityTotal})</span><span>Rs. ${priceTotal}</span></p>
                 <p class="flex items-center w-full justify-between font-bold mb-4 border-t pt-2 text-lg"><span>Total:</span><span>Rs.${priceTotal}</span></p>
-                <button type="" value="submit" class="bg-green-500 px-4 py-2 text-white text-xl hover:bg-orange-600 w-full">Proceed to pay</button>
-            </form>
+                <button id="processed-to-pay"  value="submit" class="bg-green-500 px-4 py-2 text-white text-xl hover:bg-orange-600 w-full"           
+                >Proceed to pay</button>
         `);
     } else {
         $('#checkoutContainer').html("<p>You don't have selected any product.</p>");
@@ -86,4 +98,62 @@ jQuery(document).ready(function ($) {
 
 
 
+
+
+    ///get the data of order when user processed to pay
+    $('#processed-to-pay').on("click", function () {
+        let fullName = $('#name').val();
+        let contactInfo = $('#contactInfo').val();
+        let shippingAddress = $('#shipping_address').val();
+        var payment_id = transaction_uuid;
+
+        if (!contactInfo && !shippingAddress) {
+            alert('Fill all the fields');
+            // Highlight the fields
+            $('#contactInfo').addClass('border-red-400');
+            $('#shipping_address').addClass('border-red-400');
+        } else if (!contactInfo) {
+            alert('Please provide your contact information');
+            $('#contactInfo').addClass('border-red-400');
+        } else if (!shippingAddress) {
+            alert('Please provide your shipping address');
+            $('#shipping_address').addClass('border-red-400');
+        } else {
+
+            let ship = {
+                username: fullName,
+                contact: contactInfo,
+                address: shippingAddress
+            }
+
+            let data = {
+                action: 'process_to_pay',
+                productdetails: productData,
+                shipping: ship,
+                payment_id: payment_id
+            };
+            // console.log(data)
+            // Send the data via AJAX
+            $.ajax({
+                url: checkout_product.ajaxurl,
+                type: 'POST',
+                data: data,
+                success: function (response) {
+                    console.log('Success:', response);
+                    // alert('Payment processing initiated successfully!');
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    // alert('There was an error processing your payment. Please try again.');
+                }
+            });
+        }
+
+
+    });
+
+
+
+
 });
+

@@ -95,6 +95,7 @@ get_header();
                     }
                     ?>" data-product-image="<?php echo $featured_image; ?>"
                     data-product-slug="<?php echo $post_slug; ?>"
+                    data-user-id="<?php echo $user_id; ?>"
                     >Buy
                     Now</button>
                 <button class="productCart bg-orange-500 hover:bg-orange-600 w-full py-4 text-xl text-white font-bold"

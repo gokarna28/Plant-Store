@@ -55,8 +55,8 @@ function theme01_enqueue_scripts()
         );
     }
 
-     // cart product js
-     if (is_page('checkout')) {
+    // cart product js
+    if (is_page('checkout')) {
 
         wp_enqueue_script('jquery');
 
@@ -201,6 +201,14 @@ function enqueue_custom_scripts()
             'ajaxurl' => esc_url(admin_url('admin-ajax.php')),
         )
     );
+
+    wp_localize_script(
+        'checkout-js',
+        'checkout_product',
+        array(
+            'ajaxurl' => esc_url(admin_url('admin-ajax.php')),
+        )
+    );
 }
 add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');
 
@@ -260,7 +268,7 @@ function filter_category_callback()
                 $output .= '</div>';
                 $output .= '</a>';
                 $output .= '<div class="flex space-x-2">';
-             
+
                 $output .= '<button class="listed bg-orange-500 flex-1 text-white text-xl px-4 py-2 hover:bg-orange-600"
                                 data-product-title="' . get_the_title() . '" 
                                 data-product-id="' . $product_id . '"
@@ -271,7 +279,7 @@ function filter_category_callback()
                                 >
                                 Add To Cart
                             </button>';
-            
+
                 $output .= '</div>';
                 $output .= '</div>';
             }
@@ -293,3 +301,75 @@ add_action('wp_ajax_filter_category', 'filter_category_callback');
 
 // Hook for guests
 add_action('wp_ajax_nopriv_filter_category', 'filter_category_callback');
+
+
+
+
+
+//processed to pay action store the data in order table
+add_action('wp_ajax_process_to_pay', 'handle_process_to_pay');
+add_action('wp_ajax_nopriv_process_to_pay', 'handle_process_to_pay');
+
+function handle_process_to_pay()
+{
+    // Ensure that the 'productdetails' is sent and is an array
+    if (isset($_POST['productdetails']) && is_array($_POST['productdetails']) && isset($_POST['shipping']) && is_array($_POST['shipping'])) {
+        $productDetails = $_POST['productdetails'];
+        $ship = $_POST['shipping'];
+        $payment_id = $_POST['payment_id'];
+
+        $combined_array = array_map(function ($product) use ($ship) {
+            return array_merge($product, $ship);
+        }, $productDetails);
+
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'orders';
+
+        foreach ($combined_array as $product) {
+            $order_data = array(
+                'product_title' => $product['title'],
+                'product_slug' => $product['slug'],
+                'product_image' => $product['image'],
+                'product_price' => $product['price'],
+                'product_qty' => $product['qty'],
+                'user_name' => $product['username'],
+                'shipping_address' => $product['address'],
+                'contact' => $product['contact'],
+                'user_id' => $product['userId'],
+                'payment_id' => $payment_id,
+                'status' => 0,
+                'date' => current_time('mysql')
+            );
+
+            // Insert the data into the custom orders table
+            $wpdb->insert($table_name, $order_data);
+        }
+        if ($wpdb->insert_id) {
+            $response = [
+                'status' => 'success',
+                'message' => 'Payment processing initiated',
+                'data' => $combined_array,
+
+            ];
+        } else {
+            $response = [
+                'status' => 'error',
+                'message' => 'Failed to store data',
+                'db_error' => $wpdb->last_error // Retrieve and log the database error
+            ];
+        }
+
+
+    } else {
+        $response = [
+            'status' => 'error',
+            'message' => 'No product details provided or invalid format'
+        ];
+    }
+
+    // Return a response to the JavaScript request
+    wp_send_json($response);
+
+    // Always die after the request is handled
+    wp_die();
+}

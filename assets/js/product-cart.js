@@ -23,6 +23,7 @@ jQuery(document).ready(function ($) {
                     data-product-image="${item.productImage}"
                     data-product-slug="${item.productSlug}"
                     data-product-amount="${item.productAmount}"
+                    data-user-id="${item.userId}"
                   /></label></td>
                   <td class="flex items-center gap-4">
                     <a href="/products/${item.productSlug}" class="w-20 h-20 bg-red-300">
@@ -94,6 +95,7 @@ jQuery(document).ready(function ($) {
             // Retrieve the data attributes using jQuery's data() method
             let productTitle = $(this).data('product-title');
             let productId = $(this).data('product-id');
+            let userId = $(this).data('user-id');
             let productPrice = $(this).data('product-price');
             let productImage = $(this).data('product-image');
             let productSlug = $(this).data('product-slug');
@@ -113,7 +115,8 @@ jQuery(document).ready(function ($) {
                 id: productId,
                 slug: productSlug,
                 price: productPrice,
-                amount: productAmount
+                amount: productAmount,
+                userId:userId
             };
 
       
