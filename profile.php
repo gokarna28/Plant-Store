@@ -32,7 +32,7 @@ global $wpdb;
 $table_name = $wpdb->prefix . 'customer'; // wp_customer table name
 $user_data = $wpdb->get_row(
     $wpdb->prepare(
-        "SELECT * FROM $table_name WHERE ID = %d", 
+        "SELECT * FROM $table_name WHERE ID = %d",
         $user_id
     )
 );
@@ -49,27 +49,36 @@ if ($user_data) {
 
 get_header();
 ?>
+<section>
+    <container class="w-1/4 border-r h-screen flex flex-col bg-white absolute">
+        <a class="bg-slate-100 text-xl font-medium border-b py-4 px-20 hover:bg-slate-100" href="#">Profile</a>
+        <a class="text-xl font-medium border-b py-4 px-20 hover:bg-slate-100" href="http://plants-store.local/orders/">Orders</a>
+        <a class="text-xl font-medium border-b py-4 px-20 hover:bg-slate-100" href="#">Settings</a>
 
-<!-- Display User Profile -->
-<h1>User Profile</h1>
-<p><strong>Username:</strong> <?php echo $username; ?></p>
-<p><strong>Email:</strong> <?php echo $email; ?></p>
-<p><strong>Full Name:</strong> <?php echo $fullname; ?></p>
-
-<!-- Logout Form -->
-<form method="post">
-    <button type="submit" name="logout">Logout</button>
-</form>
-
-
-<section class="flex bg-white">
-    <container class="w-1/4 border-r">
-        <div>Profile</div>
-        <div>Order</div>
-        <div>Payment</div>
-        <div>Logout</div>
+        <!-- Logout Form -->
+        <form method="post">
+            <button class="text-xl font-medium border-b py-4 px-20 hover:bg-slate-100 w-full text-start" type="submit"
+                name="logout">Logout</button>
+        </form>
     </container>
-    <container class="bg-slate-400 w-3/4">date</container>
+    <constiner class="flex items-center">
+        <div class="w-1/4"></div>
+        <div class="w-3/4 p-6 bg-white h-screen">
+            <!-- Display User Profile -->
+            <h1 class="text-2xl font-bold mb-6">User Details</h1>
+            <div class="flex flex-col items-start">
+                <label class="mb-2"><strong>Display Name:</strong></label>
+                <input class="border focus:outline-none p-2 w-1/2 text-xl rounded-md" type="text" value="  <?php echo $fullname; ?>" readonly />
+            </div>
+            <div class="flex flex-col items-start">
+                <label class="mb-2"><strong>Email:</strong></label>
+                <input class="border focus:outline-none p-2 w-1/2 text-xl rounded-md" type="text" value="  <?php echo $email; ?>" readonly />
+            </div>
+            
+        </div>
+
+    </constiner>
+
 </section>
 <?php
 get_footer();

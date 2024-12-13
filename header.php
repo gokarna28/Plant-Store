@@ -41,7 +41,7 @@ if (isset($_SESSION['user_id'])) {
     }
     ?>
 
-    <header>
+    <header class="z-50">
         <?php get_template_part('template-parts/template-header'); ?>
     </header>
 
