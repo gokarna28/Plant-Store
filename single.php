@@ -40,7 +40,7 @@ get_header();
             ?>
         </p>
 
-        <div calss="text-xl">
+        <div class="text-lg">
             <?php the_content(); ?>
         </div>
         <div class="mt-6 mb-6 flex items-center justify-between">
