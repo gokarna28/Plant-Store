@@ -30,6 +30,7 @@ jQuery(document).ready(function ($) {
             priceTotal += product.price * product.amount;
             quantityTotal += product.amount;
             const productDetails = {
+                id:product.id,
                 title: product.title,
                 slug: product.slug,
                 image: product.image,
@@ -74,23 +75,26 @@ jQuery(document).ready(function ($) {
 
         // Append the order summary
         $('#orderSummary').append(`  
-            <input type="hidden" id="amount" name="amount" value="${total_amount}" required>
-            <input type="hidden" id="tax_amount" name="tax_amount" value ="0" required>
-            <input type="hidden" id="total_amount" name="total_amount" value="${total_amount}" required>
-            <input type="hidden" id="transaction_uuid" name="transaction_uuid" value="${transaction_uuid}" required>
-            <input type="hidden" id="product_code" name="product_code" value ="EPAYTEST" required>
-            <input type="hidden" id="product_service_charge" name="product_service_charge" value="0" required>
-            <input type="hidden" id="product_delivery_charge" name="product_delivery_charge" value="0" required>
-            <input type="hidden" id="success_url" name="success_url" value="http://plants-store.local/payment-success/" required>
-            <input type="hidden" id="failure_url" name="failure_url" value="http://plants-store.local/payment-failed/" required>
-            <input type="hidden" id="signed_field_names" name="signed_field_names" value="total_amount,transaction_uuid,product_code" required>
-            <input type="hidden" id="signature" name="signature" value="${signature}" required>
-           
-                <h2 class="text-2xl font-bold mb-2">Order Summary</h2>
-                <p class="flex items-center w-full justify-between text-slate-500 text-lg mb-4"><span>Items Total(${quantityTotal})</span><span>Rs. ${priceTotal}</span></p>
-                <p class="flex items-center w-full justify-between font-bold mb-4 border-t pt-2 text-lg"><span>Total:</span><span>Rs.${priceTotal}</span></p>
-                <button id="processed-to-pay"  value="submit" class="bg-green-500 px-4 py-2 text-white text-xl hover:bg-orange-600 w-full"           
-                >Proceed to pay</button>
+            <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
+                <input type="hidden" id="amount" name="amount" value="${total_amount}" required>
+                <input type="hidden" id="tax_amount" name="tax_amount" value ="0" required>
+                <input type="hidden" id="total_amount" name="total_amount" value="${total_amount}" required>
+                <input type="hidden" id="transaction_uuid" name="transaction_uuid" value="${transaction_uuid}" required>
+                <input type="hidden" id="product_code" name="product_code" value ="EPAYTEST" required>
+                <input type="hidden" id="product_service_charge" name="product_service_charge" value="0" required>
+                <input type="hidden" id="product_delivery_charge" name="product_delivery_charge" value="0" required>
+                <input type="hidden" id="success_url" name="success_url" value="http://plants-store.local/payment-success/" required>
+                <input type="hidden" id="failure_url" name="failure_url" value="http://plants-store.local/payment-failed/" required>
+                <input type="hidden" id="signed_field_names" name="signed_field_names" value="total_amount,transaction_uuid,product_code" required>
+                <input type="hidden" id="signature" name="signature" value="${signature}" required>
+            
+                    <h2 class="text-2xl font-bold mb-2">Order Summary</h2>
+                    <p class="flex items-center w-full justify-between text-slate-500 text-lg mb-4"><span>Items Total(${quantityTotal})</span><span>Rs. ${priceTotal}</span></p>
+                    <p class="flex items-center w-full justify-between font-bold mb-4 border-t pt-2 text-lg"><span>Total:</span><span>Rs.${priceTotal}</span></p>
+                    <button id="processed-to-pay"  value="submit" class="bg-green-500 px-4 py-2 text-white text-xl hover:bg-orange-600 w-full"           
+                    >Proceed to pay</button>
+            </form>
+
         `);
     } else {
         $('#checkoutContainer').html("<p>You don't have selected any product.</p>");

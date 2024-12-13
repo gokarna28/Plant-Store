@@ -33,7 +33,7 @@ $user_data = $wpdb->get_row(
 $display_name = $user_data->customer_name;
 
 get_header();// call the header
-?>
+?>  
 
 <section id="checkoutContainer" class="p-16 flex items-start gap-6">
 
@@ -76,5 +76,16 @@ get_header();// call the header
     </container>
 
 </section>
+
+
 <?php
+$first_url="http://plants-store.local/payment-success/?data=eyJ0cmFuc2FjdGlvbl9jb2RlIjoiMDAwOTZNUyIsInN0YXR1cyI6IkNPTVBMRVRFIiwidG90YWxfYW1vdW50IjoiMiwyMTIuNCIsInRyYW5zYWN0aW9uX3V1aWQiOiJULVotSi1aLVIiLCJwcm9kdWN0X2NvZGUiOiJFUEFZVEVTVCIsInNpZ25lZF9maWVsZF9uYW1lcyI6InRyYW5zYWN0aW9uX2NvZGUsc3RhdHVzLHRvdGFsX2Ftb3VudCx0cmFuc2FjdGlvbl91dWlkLHByb2R1Y3RfY29kZSxzaWduZWRfZmllbGRfbmFtZXMiLCJzaWduYXR1cmUiOiJwdGVaU1cyYUdKUWYvWHE0YUJDaHM5QVhqZVR0Z2NUdjF5Z0tPZ3k0MUs0PSJ9";
+$second_url="http://plants-store.local/payment-success/?data=eyJ0cmFuc2FjdGlvbl9jb2RlIjoiMDAwOTZNViIsInN0YXR1cyI6IkNPTVBMRVRFIiwidG90YWxfYW1vdW50IjoiMiw2NDAuMCIsInRyYW5zYWN0aW9uX3V1aWQiOiJXLUctZS1mLUsiLCJwcm9kdWN0X2NvZGUiOiJFUEFZVEVTVCIsInNpZ25lZF9maWVsZF9uYW1lcyI6InRyYW5zYWN0aW9uX2NvZGUsc3RhdHVzLHRvdGFsX2Ftb3VudCx0cmFuc2FjdGlvbl91dWlkLHByb2R1Y3RfY29kZSxzaWduZWRfZmllbGRfbmFtZXMiLCJzaWduYXR1cmUiOiJGVGxXdzB6K2hSbWZRMFFBRkN5cHRQbGpsK2d6OVd3YVEza3BOKzNrcm5BPSJ9";
+
+if($first_url== $second_url){
+    echo "same";
+}else{
+    echo "not ";
+}
+
 get_footer();

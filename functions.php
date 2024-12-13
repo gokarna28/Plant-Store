@@ -302,8 +302,13 @@ add_action('wp_ajax_filter_category', 'filter_category_callback');
 // Hook for guests
 add_action('wp_ajax_nopriv_filter_category', 'filter_category_callback');
 
-
-
+//start session
+add_action('init', 'custom_session_start', 1);
+function custom_session_start() {
+    if (!session_id()) {
+        session_start();
+    }
+}
 
 
 //processed to pay action store the data in order table
@@ -316,17 +321,20 @@ function handle_process_to_pay()
     if (isset($_POST['productdetails']) && is_array($_POST['productdetails']) && isset($_POST['shipping']) && is_array($_POST['shipping'])) {
         $productDetails = $_POST['productdetails'];
         $ship = $_POST['shipping'];
-        $payment_id = $_POST['payment_id'];
+        $payment_id = sanitize_text_field($_POST['payment_id']); 
+        $_SESSION['payment_id'] = $payment_id; 
 
         $combined_array = array_map(function ($product) use ($ship) {
             return array_merge($product, $ship);
         }, $productDetails);
 
+    
         global $wpdb;
         $table_name = $wpdb->prefix . 'orders';
 
         foreach ($combined_array as $product) {
             $order_data = array(
+                'product_id'=>$product['id'],
                 'product_title' => $product['title'],
                 'product_slug' => $product['slug'],
                 'product_image' => $product['image'],
@@ -337,7 +345,7 @@ function handle_process_to_pay()
                 'contact' => $product['contact'],
                 'user_id' => $product['userId'],
                 'payment_id' => $payment_id,
-                'status' => 0,
+                'status' => 1,
                 'date' => current_time('mysql')
             );
 
@@ -358,7 +366,7 @@ function handle_process_to_pay()
                 'db_error' => $wpdb->last_error // Retrieve and log the database error
             ];
         }
-
+        // }
 
     } else {
         $response = [

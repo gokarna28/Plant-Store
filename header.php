@@ -44,3 +44,6 @@ if (isset($_SESSION['user_id'])) {
     <header>
         <?php get_template_part('template-parts/template-header'); ?>
     </header>
+
+    <?php
+    
